@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>MaksaiShop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f4f4;--card:#fff;--ink:#191919;--mut:#767676;--line:#ececec;--soft:#fff0ed;--p:#ff4747;--p2:#ff8a00;--acc:#ff8a00;--acc2:#ff4747;--ok:#1aa05b;--glass:#fff;--sh:0 2px 10px rgba(0,0,0,.07);color-scheme:light}
+[data-theme=dark]{--bg:#121212;--card:#1e1e1e;--ink:#f2f2f2;--mut:#a3a3a3;--line:#333;--soft:#33201d;--glass:#1e1e1e;--sh:0 2px 10px rgba(0,0,0,.5);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#c9c9c9;border-radius:10px;border:2px solid var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter","Segoe UI",system-ui,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+button,input,select{font-family:inherit}
+.top{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;text-align:center;font-size:13px;font-weight:600;padding:7px 10px}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:12px 24px;background:var(--card);box-shadow:var(--sh)}
+.logo{font-weight:900;font-size:25px;text-decoration:none;color:var(--p);white-space:nowrap;letter-spacing:-.5px}.logo b{color:var(--ink)}
+.sw{flex:1;position:relative;min-width:120px;max-width:760px}
+#search{width:100%;height:46px;border:2px solid var(--p);border-radius:999px;padding:0 70px 0 20px;font-size:15px;outline:none;background:var(--card);color:var(--ink)}
+.sb{position:absolute;right:4px;top:4px;bottom:4px;width:62px;border:0;border-radius:999px;background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;font-size:16px;cursor:pointer}
+.lang,.curs{display:flex;background:var(--bg);border-radius:10px;padding:3px;gap:2px}
+.lang button,.curs button{border:0;background:transparent;color:var(--mut);padding:6px 11px;border-radius:8px;cursor:pointer;font-weight:700}
+.lang button.on,.curs button.on{background:var(--p);color:#fff}
+.curs.big{background:var(--soft)}.curs.big button{flex:1;padding:10px}
+.ib{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 12px;font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap;transition:.2s}
+.ib:hover{border-color:var(--p);color:var(--p)}
+#cnt,#wcnt{min-width:21px;height:21px;padding:0 6px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:var(--p)}
+.bump{animation:bump .35s}@keyframes bump{50%{transform:scale(1.2)}}
+.user{display:flex;align-items:center;gap:10px;white-space:nowrap;cursor:pointer;padding:4px 8px;border-radius:12px}.user:hover{background:var(--bg)}
+.ava{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none;background-size:cover;background-position:center;overflow:hidden;box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--p)}
+.ut{display:flex;flex-direction:column;line-height:1.25}.ut small{font-size:11.5px;color:var(--mut)}
+.bal{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;padding:7px 13px;border-radius:999px;font-weight:800}
+
+.wrap{display:flex;flex:1;gap:16px;padding:16px 20px;max-width:1480px;width:100%;margin:0 auto}
+aside{width:244px;flex:none;background:var(--card);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--sh)}
+aside h3{margin:0 6px 4px;font-size:16px}
+.cat{display:flex;align-items:center;gap:10px;border:0;background:transparent;color:var(--ink);border-radius:10px;padding:11px 10px;cursor:pointer;font-weight:600;font-size:15px;text-align:left;transition:.15s;position:relative}
+.cat span{font-size:20px;width:28px;text-align:center}.cat em{margin-left:auto;font-style:normal;color:var(--mut)}
+.cat:hover{background:var(--soft);color:var(--p)}
+.cat.on{background:var(--soft);color:var(--p)}.cat.on::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:4px;background:var(--p)}
+.promo{border:2px dashed var(--p);border-radius:12px;padding:12px;text-align:center;font-size:13px;background:var(--soft);margin-top:6px}
+.promo b{display:block;font-size:20px;letter-spacing:3px;color:var(--p)}
+.ads{margin-top:auto;min-height:200px;border-radius:14px;background:linear-gradient(135deg,var(--p),var(--p2),#ffb300,var(--p));background-size:300% 300%;animation:shine 7s ease infinite;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:24px;letter-spacing:3px;line-height:1.45}
+@keyframes shine{50%{background-position:100% 50%}}
+main{flex:1;min-width:0}
+
+.hero{display:grid;grid-template-columns:1fr 262px;gap:16px}
+.banner{position:relative;overflow:hidden;height:330px;border-radius:16px;color:#fff;display:flex;align-items:center;padding:0 90px;transition:background .5s}
+.banner::before,.banner::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.14)}
+.banner::before{width:320px;height:320px;right:-70px;top:-100px}.banner::after{width:190px;height:190px;right:170px;bottom:-90px}
+.banner h2{margin:0;font-size:50px;font-weight:900;letter-spacing:-1px;text-shadow:0 4px 14px rgba(0,0,0,.2)}
+.banner p{margin:6px 0 18px;font-size:22px;font-weight:600}
+.cta{border:0;background:#fff;color:var(--p);font-weight:800;padding:13px 28px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.22);transition:.2s}.cta:hover{transform:scale(1.06)}
+.be{position:absolute;right:90px;top:50%;transform:translateY(-50%);font-size:120px;z-index:1;filter:drop-shadow(0 12px 12px rgba(0,0,0,.3));animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(calc(-50% - 14px)) rotate(6deg)}}
+.arr{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:42px;height:60px;border:0;background:rgba(0,0,0,.28);color:#fff;font-size:26px;cursor:pointer;transition:.2s}
+.arr:hover{background:rgba(0,0,0,.55)}.arr.l{left:0;border-radius:0 12px 12px 0}.arr.r{right:0;border-radius:12px 0 0 12px}
+.dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:2}
+.dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.55);transition:.3s}.dots i.on{background:#fff;width:24px;border-radius:5px}
+.wp{background:var(--card);border-radius:16px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:var(--sh)}
+.wpa{width:70px;height:70px;font-size:38px}
+.wpb{font-size:26px;font-weight:900;color:var(--p)}
+.wbtn{width:100%;padding:11px;border-radius:999px;border:0;background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;font-weight:800;cursor:pointer}
+.wbtn.o{background:var(--card);color:var(--p);border:2px solid var(--p)}
+.wpl{margin-top:auto;font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:10px;width:100%}
+
+.qc{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;background:var(--card);border-radius:16px;padding:16px 8px;margin-top:16px;box-shadow:var(--sh)}
+.qc button{border:0;background:transparent;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;font-weight:600;font-size:13px;transition:.2s}
+.qc span{width:56px;height:56px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:26px;transition:.25s}
+.qc button:hover span{background:var(--p);transform:translateY(-4px) scale(1.08);box-shadow:0 8px 16px rgba(255,71,71,.4)}
+.cps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.cp{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-radius:14px;color:#fff;background:linear-gradient(100deg,var(--p),var(--p2));position:relative;box-shadow:0 6px 14px rgba(255,71,71,.25)}
+.cp::before,.cp::after{content:"";position:absolute;left:62%;width:16px;height:16px;border-radius:50%;background:var(--bg)}
+.cp::before{top:-8px}.cp::after{bottom:-8px}
+.cp b{font-size:24px;display:block}.cp small{opacity:.9}
+.cp button{border:0;background:#fff;color:var(--p);font-weight:800;border-radius:999px;padding:9px 16px;cursor:pointer}
+
+h2.t{margin:26px 0 12px;font-size:24px;font-weight:900;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cd{font-size:13px;font-weight:600;color:var(--mut)}.cd b{background:#191919;color:#fff;padding:4px 7px;border-radius:6px;margin:0 2px;font-size:14px}
+.box{background:var(--card);border-radius:16px;padding:16px;position:relative;box-shadow:var(--sh)}
+.row{display:flex;gap:12px}
+.row.scroll{overflow-x:auto;scroll-behavior:smooth;padding:2px 56px 6px 2px;scrollbar-width:none}.row.scroll::-webkit-scrollbar{display:none}
+.row.scroll .card{width:200px;flex:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.next{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;border-radius:12px;background:var(--card);color:var(--p);font-size:28px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.next:hover{background:var(--p);color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer;font-weight:600;font-size:14px}
+.chip:hover{border-color:var(--p);color:var(--p)}.chip.on{background:var(--p);color:#fff;border-color:var(--p)}
+select{margin-left:auto;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600}
+.more{display:block;margin:18px auto 0;padding:12px 40px;border:2px solid var(--p);background:transparent;color:var(--p);border-radius:999px;font-weight:800;cursor:pointer}
+.more:hover{background:var(--p);color:#fff}
+
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:6px;transition:.25s;animation:pop .45s both}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}}
+.card:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(255,71,71,.18);border-color:var(--p)}
+.ph{height:150px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:66px;transition:.35s;background:#f3f3f3}
+.card:hover .ph{transform:scale(1.05)}
+.c-tech{background:linear-gradient(135deg,#e0ecff,#d4dcff)}.c-home{background:linear-gradient(135deg,#fff1cc,#ffd9b0)}.c-fashion{background:linear-gradient(135deg,#ffe0ef,#eadbff)}.c-sport{background:linear-gradient(135deg,#d8f8e8,#b6f0d3)}.c-beauty{background:linear-gradient(135deg,#ffe3e6,#ffc9d0)}
+[data-theme=dark] .ph{filter:brightness(.82)}
+.choice{position:absolute;top:14px;left:14px;z-index:1;background:#191919;color:#ffd666;font-size:11px;font-weight:900;padding:3px 8px;border-radius:6px;letter-spacing:.5px}
+.heart{position:absolute;top:12px;right:12px;z-index:1;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.92);cursor:pointer;font-size:15px;color:#bbb;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:.2s}
+.heart:hover{transform:scale(1.15)}.heart.on{color:var(--p)}
+.name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:14px}
+.price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.price b{color:var(--p);font-size:20px;font-weight:900}.price s{color:var(--mut);font-size:13px}
+.pct{background:var(--p);color:#fff;font-size:11px;font-weight:800;padding:2px 6px;border-radius:5px}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--mut)}.meta i{color:#ffa400;font-style:normal}
+.ship{color:var(--ok);font-weight:700}
+.sbar{position:relative;height:16px;border-radius:8px;background:#ffd9d3;overflow:hidden}
+.sbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--p),var(--p2));border-radius:8px}
+.sbar span{position:relative;font-size:10.5px;font-weight:800;color:#fff;padding-left:8px;line-height:16px}
+.btns{display:flex;gap:6px;margin-top:2px}
+.btns button{flex:1;padding:8px 4px;font-size:12px;font-weight:700;border-radius:999px;cursor:pointer;transition:.2s}
+.b-info{background:transparent;border:1px solid var(--line);color:var(--ink)}.b-info:hover{border-color:var(--p);color:var(--p)}
+.b-add{background:linear-gradient(90deg,var(--p),var(--p2));border:0;color:#fff}.b-add:hover{filter:brightness(1.1)}.b-add:active{transform:scale(.94)}
+.empty{padding:20px;color:var(--mut)}
+.rks{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.rk{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 10px 12px;cursor:pointer;color:var(--ink);transition:.25s;text-align:center}
+.rk:hover{transform:translateY(-4px);border-color:var(--p)}
+.rk .no{position:absolute;top:0;left:0;width:34px;height:34px;border-radius:14px 0 14px 0;background:linear-gradient(135deg,#ffb300,var(--p2));color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center}
+.rk:nth-child(1) .no{background:linear-gradient(135deg,#ff4747,#ff8a00)}
+.rk .re{font-size:50px}.rk b{font-size:13px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rk small{color:var(--p);font-weight:800;font-size:15px}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.feat{background:var(--card);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:var(--sh)}
+.feat span{font-size:24px;width:48px;height:48px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;flex:none}
+.feat b{display:block}.feat small{color:var(--mut)}
+
+footer{margin-top:16px;background:#222;color:#cfcfcf}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr 2fr;gap:28px;padding:38px 24px;max-width:1480px;margin:0 auto}
+footer h4{margin:0 0 12px;color:#fff}
+footer a{display:block;color:#aaa;text-decoration:none;margin:7px 0;font-size:14px}footer a:hover{color:var(--p2)}
+.pay{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}.pay span{background:#333;border-radius:8px;padding:6px 10px;font-size:13px}
+.nl{display:flex;gap:6px}.nl input{flex:1;min-width:0;padding:11px 14px;border:1px solid #444;background:#2e2e2e;color:#fff;border-radius:999px;outline:none}
+.nl button{border:0;background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;border-radius:999px;padding:0 20px;cursor:pointer;font-weight:800}
+.fb{text-align:center;padding:14px;background:#1a1a1a;font-size:13px;color:#888}
+
+/* Окна */
+#ov,#pv{position:fixed;inset:0;z-index:30;background:rgba(10,6,30,.6);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:.25s}
+#ov.open,#pv.open{opacity:1;pointer-events:auto}
+#cp,#pp{width:min(430px,100%);max-height:84vh;background:var(--card);color:var(--ink);border-radius:26px;box-shadow:0 30px 70px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden;transform:translateY(28px) scale(.95);transition:.3s cubic-bezier(.2,.9,.3,1.2)}
+#ov.open #cp,#pv.open #pp{transform:none}
+.ch{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:linear-gradient(135deg,var(--p),var(--acc2));color:#fff;font-size:19px;font-weight:800}
+.cx{border:0;background:rgba(255,255,255,.25);color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;transition:.2s}.cx:hover{background:rgba(255,255,255,.5)}
+#cl{overflow-y:auto;padding:8px 18px;flex:1}
+.ci{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ce{font-size:30px;width:50px;height:50px;border-radius:14px;background:var(--soft);display:flex;align-items:center;justify-content:center;flex:none}
+.cn{flex:1;min-width:0}.cn .price{font-size:15px}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;transition:.2s}
+.qty button:hover{background:var(--p);color:#fff;border-color:var(--p)}
+.del{border:0;background:none;color:#ef4444;cursor:pointer;font-size:16px}
+.cf{padding:16px 22px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+#tot{font-size:22px;font-weight:800;text-align:right}
+.cb{display:flex;gap:8px}
+.cb button{flex:1;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;border:0;transition:.2s}
+#clr{background:var(--soft);color:var(--p)}
+#pay{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 8px 18px rgba(16,185,129,.4)}
+#pay:hover,#clr:hover{filter:brightness(1.08)}
+.pb{padding:20px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.pav{width:92px;height:92px;border-radius:50%;margin:0 auto;font-size:48px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--card),0 0 0 7px var(--p2),0 12px 26px rgba(109,40,217,.35);background-size:cover;background-position:center;flex:none}
+.agrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.agrid button{aspect-ratio:1;border:2px solid transparent;border-radius:11px;background:var(--soft);font-size:19px;cursor:pointer;padding:0;transition:.2s}
+.agrid button:hover{transform:scale(1.12)}.agrid button.on{border-color:var(--p2)}
+.colors{display:flex;gap:8px;justify-content:center}
+.colors button{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.colors button.on{border-color:var(--p2);box-shadow:0 0 0 2px var(--card) inset}
+.upb{text-align:center;border:1.5px dashed var(--p2);color:var(--p2);padding:10px;border-radius:12px;cursor:pointer;font-weight:700}
+.upb:hover{background:var(--soft)}
+.pb input[type=text]{padding:11px 13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;font-size:15px;outline:none}
+.pb input[type=text]:focus{border-color:var(--p2)}
+.lab{font-size:11.5px;color:var(--mut);font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:var(--soft);border-radius:14px;padding:12px;text-align:center}.stat b{display:block;font-size:17px}.stat small{color:var(--mut)}
+.bar{height:11px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:5px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--p2));transition:width .7s}
+.topup{border:0;background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(16,185,129,.35)}
+.snw{font-size:14px;cursor:pointer}
+dialog{border:0;border-radius:26px;padding:26px;width:min(390px,92vw);background:var(--card);color:var(--ink);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+dialog::backdrop{background:rgba(10,6,30,.6);backdrop-filter:blur(5px)}
+dialog .big{font-size:76px;text-align:center;background:var(--soft);border-radius:18px;padding:12px}
+dialog h3{margin:14px 0 4px}
+dialog .row2{display:flex;gap:8px;margin-top:16px}
+dialog .row2 button{flex:1;padding:12px;border-radius:12px;font-weight:800;cursor:pointer;border:0;background:var(--soft);color:var(--p)}
+dialog .row2 .b-add{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;flex:3}
+#toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:linear-gradient(135deg,#1e1b4b,#5b21b6);color:#fff;padding:13px 24px;border-radius:999px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.4);transition:.35s;opacity:0;z-index:40;pointer-events:none}
+#toast.show{transform:translate(-50%,0);opacity:1}
+#up{position:fixed;right:22px;bottom:22px;width:48px;height:48px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--p),var(--acc2));color:#fff;font-size:20px;cursor:pointer;box-shadow:0 10px 22px rgba(109,40,217,.45);opacity:0;pointer-events:none;transition:.3s;z-index:9}
+#up.show{opacity:1;pointer-events:auto}
+#snow{position:fixed;inset:0;pointer-events:none;z-index:8;overflow:hidden}
+.sn{position:absolute;top:-30px;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(110vh) translateX(40px) rotate(360deg)}}
+
+
+.hero{grid-template-columns:1fr}
+.wp{flex-direction:row;align-items:center;gap:18px;text-align:left;padding:14px 22px;flex-wrap:wrap}
+.wpa{width:58px;height:58px;font-size:32px}.wpb{font-size:24px}
+.wbtn{width:auto;padding:11px 26px}.wpl{margin:0 0 0 auto;border:0;padding:0;width:auto;font-size:16px}
+@media(max-width:1000px){.wp{display:flex}}
+.sl{position:relative}.sl .row.scroll{padding:2px 56px 6px 56px}.next.pr{right:auto;left:8px}
+#cp{width:min(1240px,97vw);height:min(760px,93vh);max-height:93vh}
+.cbody{display:flex;gap:18px;flex:1;min-height:0;padding:18px 22px}
+#cl{flex:1;overflow-y:auto;padding:0 8px 0 0;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ci{display:flex;align-items:stretch;gap:14px;border:2px solid var(--line);border-radius:14px;padding:12px;position:relative;border-bottom:2px solid var(--line)}
+.ce{width:96px;height:96px;font-size:52px;border-radius:12px;background:var(--soft);display:flex;align-items:center;justify-content:center;flex:none}
+.cn{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px;padding-right:6px}
+.cn .name{font-size:15px}.cn small{color:var(--mut)}
+.qty{display:flex;align-items:center;gap:6px;border-left:2px solid var(--line);border-right:2px solid var(--line);padding:0 14px}
+.qty input{width:54px;text-align:center;font-size:22px;font-weight:800;border:1px solid var(--line);border-radius:10px;padding:9px 0;background:var(--card);color:var(--ink);outline:none}
+.qty input:focus{border-color:var(--p)}
+.cprice{min-width:130px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-right:24px}
+.cprice small{color:var(--mut)}.cprice b{color:var(--p);font-size:18px}
+.ci .del{position:absolute;top:6px;right:8px}
+.sum{width:350px;flex:none;display:flex}.qty,.cprice,.ce{flex:none}.ci{min-width:0}
+.sbox{flex:1;border:2px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;min-height:0}
+#sl{flex:1;overflow-y:auto;font-size:13px;min-height:0}
+.sli{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sli span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sli span:last-child{white-space:nowrap;color:var(--mut)}
+.sbox hr{width:100%;border:0;border-top:2px solid var(--ink);margin:4px 0}
+.sbox .cb{flex-direction:column}
+@media(max-width:760px){.cbody{flex-direction:column;overflow-y:auto}.sum{width:auto}.sbox{min-height:260px}.ci{flex-wrap:wrap}.qty{border:0;padding:0}}
+#snow{display:none!important}.snw{display:none}
+@media(max-width:1000px){.wrap{flex-direction:column;padding:12px}aside{width:auto}.ads{min-height:80px}.hero{grid-template-columns:1fr}.wp{display:none}
+ header{flex-wrap:wrap;padding:10px 14px}.sw{order:9;flex-basis:100%;max-width:none}
+ .banner{padding:0 56px;height:220px}.banner h2{font-size:28px}.banner p{font-size:16px}.be{display:none}
+ .qc{grid-template-columns:repeat(4,1fr)}.cps{grid-template-columns:1fr}.rks{grid-template-columns:repeat(2,1fr)}.feats{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="top" id="top"></div>
+<header>
+  <a class="logo" href="#">🛍️ Maksai<b>Shop</b></a>
+  <div class="sw"><input id="search" type="search"><button class="sb" onclick="document.getElementById('search').focus()">🔍</button></div>
+  <div class="lang"><button id="ua" class="on">UA</button><button id="en">EN</button></div>
+  <div class="curs" id="curs"></div>
+  <button class="ib" id="theme" title="Theme">🌙</button>
+  <div class="ib" id="wl">♥ <span id="wcnt">0</span></div>
+  <div class="ib" id="cart">🛒 <span id="cnt">0</span></div>
+  <div class="user" id="user"><div class="ava" id="ava"></div><div class="ut"><b id="nick"></b><small id="lvl"></small></div><span class="bal" id="bal"></span></div>
+</header>
+<div class="wrap">
+  <aside>
+    <h3 id="ctitle"></h3><div id="cats" style="display:flex;flex-direction:column;gap:2px"></div>
+    <div class="promo"><span id="pt"></span><b>AUTUMN26</b></div>
+    <div class="ads">SHOP<br>SALES<br>ADS</div>
+  </aside>
+  <main>
+        <div class="hero">
+      <div class="banner" id="banner">
+        <button class="arr l" id="bl">‹</button>
+        <div style="position:relative;z-index:2"><h2 id="bh"></h2><p id="bp"></p><button class="cta" id="bc"></button></div>
+        <div class="be" id="be"></div>
+        <button class="arr r" id="br">›</button>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+    <h2 class="t" id="sales-t">⚡ Sales <span class="cd" id="cd"></span></h2>
+    <div class="box"><div class="row scroll" id="sales"></div><button class="next" id="nx">›</button></div>
+    <div class="feats" id="feats"></div>
+    <h2 class="t" id="news-t">New products</h2>
+    <div class="box">
+      <div class="tools"><div id="chips" style="display:flex;gap:8px;flex-wrap:wrap"></div><select id="sort"></select></div>
+      <div class="sl"><button class="next pr" id="pv2">‹</button><div class="row scroll" id="news"></div><button class="next" id="nx2">›</button></div>
+      <button class="more" id="more" style="display:none"></button>
+    </div>
+  </main>
+</div>
+<footer>
+  <div class="fg">
+    <div><h4>🛍️ MaksaiShop</h4><p style="font-size:14px;margin:0" id="fa"></p><div class="pay"><span>💳</span><span>🏦</span><span>📱</span><span>💵</span></div></div>
+    <div><h4 id="f1"></h4><a href="#">Доставка / Delivery</a><a href="#">Повернення / Returns</a><a href="#">FAQ</a></div>
+    <div><h4 id="f2"></h4><a href="#">support@maksaishop.com</a><a href="#">+380 00 000 00 00</a><a href="#">Instagram · Telegram</a></div>
+    <div><h4 id="f3"></h4><div class="nl"><input id="mail" type="email" placeholder="email"><button id="sub">OK</button></div></div>
+  </div>
+  <div class="fb">© 2026 MaksaiShop · Footer</div>
+</footer>
+<div id="ov"><div id="cp">
+  <div class="ch"><span id="ct"></span><button class="cx" data-x="1">✕</button></div>
+  <div class="cbody">
+    <div id="cl"></div>
+    <div class="sum"><div class="sbox">
+      <div id="sl"></div><hr><div id="tot"></div><div id="cbal" class="rate" style="text-align:right"></div>
+      <div class="cb"><button id="clr" data-c="clear"></button><button id="pay" data-c="pay"></button></div>
+    </div></div>
+  </div>
+</div></div>
+<div id="pv"><div id="pp">
+  <div class="ch"><span id="pt2"></span><button class="cx" data-px="1">✕</button></div>
+  <div class="pb">
+    <div class="pav" id="pav"></div>
+    <div class="lab" id="l1"></div><div class="agrid" id="agrid"></div>
+    <div class="colors" id="bgcol"></div>
+    <label class="upb"><span id="upl"></span><input type="file" id="file" accept="image/*" hidden></label>
+    <div class="lab" id="l2"></div><input id="nin" type="text" maxlength="14">
+    <div class="lab" id="l3"></div><div class="curs big" id="curs2"></div>
+    <div class="stats" id="stats"></div>
+    <div><div class="bar"><i id="barf"></i></div><small id="lvt" style="color:var(--mut)"></small></div>
+    <button class="topup" id="topup"></button>
+    <label class="snw"><input type="checkbox" id="snowcb" checked> 🍂 <span id="snt"></span></label>
+  </div>
+</div></div>
+<div id="snow"></div>
+<dialog id="dlg"><div class="big" id="di"></div><h3 id="dt"></h3><div class="rate" id="dr"></div><p id="dd"></p><div class="price" id="dp"></div>
+  <div class="row2"><button onclick="dlg.close()">✕</button><button class="b-add" id="da"></button></div></dialog>
+<div id="toast"></div>
+<button id="up">↑</button>
+
+<script>
+const T={
+ua:{cats:"Категорії",all:"Усі",info:"Про товар",add:"У кошик",ph:"Пошук за назвою...",none:"Нічого не знайдено",added:"Додано в кошик",cart:"🛒 Кошик",empty:"Кошик порожній",total:"Сума замовлення",clear:"Очистити",pay:"Оформити замовлення",thanks:"Дякуємо за замовлення!",poor:"Недостатньо коштів на балансі",more:"Показати ще",
+ top:"🚚 Безкоштовна доставка від {d}  ·  🍂 Осінні знижки до -35%",promo:"Осінній промокод:",
+ sorts:["За замовчуванням","Дешевші спочатку","Дорожчі спочатку","За рейтингом"],
+ f:[["🚚","Швидка доставка","1–3 дні по Україні"],["↩️","Повернення","30 днів без питань"],["🔒","Безпечна оплата","Захист платежів"],["💬","Підтримка 24/7","Завжди на зв'язку"]],
+ f1:"Покупцям",f2:"Контакти",f3:"Новини та акції",fa:"Магазин, де знайдеться все: від техніки до товарів для дому.",sub:"Ви підписані!",price:"Ціна",rev:"відгуків",sku:"Артикул",rank:"🏆 Топ рейтингу",sold:"продано",ship:"Безкоштовна доставка",hi:"Привіт",claim:"Забрати",off:"від",hot:"Гаряче",newb:"Новинки",prof2:"👤 Профіль",mycart:"🛒 Кошик",bal:"Баланс",prof:"👤 Профіль",avatar:"Аватарка",upl:"📷 Завантажити своє фото",nickl:"Нікнейм",curl:"Валюта",orders:"Замовлень",spent:"Витрачено",wish:"В обраному",cartn:"У кошику",topup:"Поповнити баланс на ",snow:"Листя",next:"До рівня",max:"Максимальний рівень!"},
+en:{cats:"Categories",all:"All",info:"Details",add:"Add to cart",ph:"Search by name...",none:"Nothing found",added:"Added to cart",cart:"🛒 Cart",empty:"Your cart is empty",total:"Order total",clear:"Clear",pay:"Checkout",thanks:"Thank you for your order!",poor:"Not enough balance",more:"Show more",
+ top:"🚚 Free delivery from {d}  ·  🍂 Autumn sale up to -35%",promo:"Autumn promo code:",
+ sorts:["Default","Price: low to high","Price: high to low","By rating"],
+ f:[["🚚","Fast delivery","1–3 days nationwide"],["↩️","Returns","30 days, no questions"],["🔒","Secure payment","Protected payments"],["💬","Support 24/7","Always here to help"]],
+ f1:"Customers",f2:"Contacts",f3:"News & offers",fa:"A store with everything: from gadgets to home goods.",sub:"You're subscribed!",price:"Price",rev:"reviews",sku:"SKU",rank:"🏆 Top rated",sold:"sold",ship:"Free shipping",hi:"Hi",claim:"Claim",off:"over",hot:"Hot",newb:"New",prof2:"👤 Profile",mycart:"🛒 Cart",bal:"Balance",prof:"👤 Profile",avatar:"Avatar",upl:"📷 Upload your photo",nickl:"Nickname",curl:"Currency",orders:"Orders",spent:"Spent",wish:"Wishlist",cartn:"In cart",topup:"Top up balance by ",snow:"Leaves",next:"To level",max:"Max level reached!"}
+};
+const CATS=[["all","🛍️"],["tech","💻","Техніка","Electronics"],["home","🏠","Дім","Home"],["fashion","👕","Одяг","Fashion"],["sport","🏀","Спорт","Sport"],["beauty","💄","Краса","Beauty"]];
+
+// Товари: [иконка, название, цена, старая цена или 0, категория, описание]
+const S=[
+["🎧","Бездротові навушники з шумозаглушенням",100,150,"tech","Активне шумозаглушення, до 30 годин роботи."],
+["⌚","Розумний годинник Sport Pro Ultra Edition",250,320,"tech","Пульс, сон, GPS та водостійкий корпус."],
+["📷","Фотокамера",480,600,"tech","24 Мп, 4K-відео, у комплекті сумка."],
+["🎮","Ігровий геймпад",60,80,"tech","Бездротовий, зручна ергономіка."],
+["👟","Бігові кросівки AirRun",85,120,"sport","Легка амортизація для щоденних пробіжок."],
+["☕","Кавоварка автоматична",210,280,"home","Еспресо та капучино одним натисканням."],
+["🧥","Зимова куртка Arctic",190,260,"fashion","Тепла, вітрозахисна, до -25°C."],
+["🎒","Рюкзак міський",45,70,"fashion","Відділення для ноутбука 15.6″."]];
+const N=[
+["📱","Смартфон",300,350,"tech","Яскравий екран, швидка зарядка, чудова камера."],
+["💻","Ноутбук",900,0,"tech","Тонкий і потужний, 16 ГБ пам'яті, SSD 512 ГБ."],
+["⌨️","Клавіатура механічна",50,70,"tech","Червоні перемикачі та підсвічування."],
+["🖥️","Монітор 27″",200,0,"tech","IPS, 144 Гц, тонкі рамки."],
+["🔋","Павербанк 20000 мАг",40,0,"tech","Швидка зарядка двох пристроїв одночасно."],
+["🖱️","Миша бездротова",30,0,"tech","Тиха, точний сенсор, до 12 місяців від батарейки."],
+["🔊","Колонка Bluetooth",90,0,"tech","Об'ємний звук і захист від води."],
+["💡","Розумна лампа",25,0,"home","Керування зі смартфона, 16 млн кольорів."],
+["🛋️","Диван двомісний",650,0,"home","М'яка оббивка, розкладний механізм."],
+["🪴","Кімнатна рослина",15,0,"home","Оживить інтер'єр, невибаглива у догляді."],
+["🧹","Робот-пилосос",320,0,"home","Складає карту кімнат, керування голосом."],
+["🍳","Сковорідка з антипригарним покриттям",35,0,"home","Підходить для всіх типів плит."],
+["👕","Футболка базова",20,0,"fashion","100% бавовна, кілька кольорів."],
+["👖","Джинси класичні",55,0,"fashion","Прямий крій, щільний деним."],
+["🕶️","Сонцезахисні окуляри",30,0,"fashion","UV400, легка оправа."],
+["🧢","Кепка",15,0,"fashion","Регульований розмір, дихаюча тканина."],
+["🏀","М'яч баскетбольний",25,0,"sport","Стандартний розмір 7, міцне покриття."],
+["🚲","Велосипед гірський",420,0,"sport","21 швидкість, алюмінієва рама."],
+["🏋️","Гантелі 2×5 кг",40,0,"sport","Неопренове покриття, не ковзають."],
+["🧘","Килимок для йоги",20,0,"sport","Нековзний, товщина 6 мм."],
+["🧴","Крем для обличчя",18,0,"beauty","Зволожує та захищає шкіру весь день."],
+["💄","Помада матова",12,0,"beauty","Стійкий колір, комфортна текстура."],
+["🧼","Набір натуральних мийок",10,0,"beauty","Ручна робота, ефірні олії."],
+["🌸","Парфуми квіткові",75,0,"beauty","Свіжий аромат з нотами жасмину."]];
+const ALL=[...S,...N].map((a,i)=>({id:i,i:a[0],n:a[1],p:a[2],o:a[3],c:a[4],d:a[5],r:+(4+((i*7)%10)/10).toFixed(1),v:20+(i*37)%400}));
+const sales=ALL.slice(0,S.length);
+
+const $=id=>document.getElementById(id);
+let lang="ua",slide=0,cart={},wish=new Set(),cat="all",shown=12,bal=1250,timer,cur="UAH",nick="John",ava={t:"e",v:"🙂",bg:"#ffffff"},orders=0,spent=0,snowOn=true,theme="light";
+
+let claimed=new Set();
+const K=n=>n>=1000?(n/1000).toFixed(1).replace(".0","")+"K":n;
+function card(p,sale){
+  const t=T[lang],sold=120+(p.id*173)%4000,pc=p.o?Math.round((1-p.p/p.o)*100):0,bar=25+sold%70;
+  return `<div class="card">${p.id%4==0?'<span class="choice">Choice</span>':""}<button class="heart ${wish.has(p.id)?"on":""}" data-w="${p.id}">♥</button>
+  <div class="ph c-${p.c}">${p.i}</div>
+  <div class="name" title="${p.n}">${p.n}</div>
+  <div class="price"><b>${fmt(p.p)}</b>${p.o?`<s>${fmt(p.o)}</s><span class="pct">-${pc}%</span>`:""}</div>
+  <div class="meta"><span class="ship">🚚 ${t.ship}</span></div>
+  <div class="meta"><span><i>★</i> ${p.r}</span><span>${K(sold)} ${t.sold}</span></div>
+  ${sale?`<div class="sbar"><i style="width:${bar}%"></i><span>🔥 ${bar}%</span></div>`:""}
+  <div class="btns"><button class="b-info" data-i="${p.id}">${t.info}</button><button class="b-add" data-a="${p.id}">${t.add}</button></div></div>`;
+}
+function render(){
+  const t=T[lang],q=$("search").value.trim().toLowerCase(),match=p=>p.n.toLowerCase().includes(q);
+  const cn=c=>c[0]=="all"?t.all:(lang=="ua"?c[2]:c[3]);
+  const s=sales.filter(match);
+  $("sales").innerHTML=s.length?s.map(p=>card(p,1)).join(""):`<div class="empty">${t.none}</div>`;
+  let list=ALL.slice(S.length).filter(p=>match(p)&&(cat=="all"||p.c==cat));
+  const so=$("sort").value;
+  if(so=="1")list.sort((a,b)=>a.p-b.p);if(so=="2")list.sort((a,b)=>b.p-a.p);if(so=="3")list.sort((a,b)=>b.r-a.r);
+  $("news").innerHTML=list.length?list.map(p=>card(p,0)).join(""):`<div class="empty">${t.none}</div>`;
+  $("more").style.display="none";$("more").textContent=t.more;
+  $("search").placeholder=t.ph;$("ctitle").textContent=t.cats;$("top").textContent=t.top.replace("{d}",fmt(12));$("pt").textContent=t.promo;
+  $("cats").innerHTML=CATS.map(c=>`<button class="cat ${c[0]==cat?"on":""}" data-cat="${c[0]}"><span>${c[1]}</span>${cn(c)}<em>›</em></button>`).join("");
+  $("chips").innerHTML=CATS.map(c=>`<button class="chip ${c[0]==cat?"on":""}" data-cat="${c[0]}">${cn(c)}</button>`).join("");
+  const sv=$("sort").value;$("sort").innerHTML=t.sorts.map((x,i)=>`<option value="${i}">${x}</option>`).join("");$("sort").value=sv||"0";
+  $("feats").innerHTML=t.f.map(f=>`<div class="feat"><span>${f[0]}</span><div><b>${f[1]}</b><small>${f[2]}</small></div></div>`).join("");
+  $("f1").textContent=t.f1;$("f2").textContent=t.f2;$("f3").textContent=t.f3;$("fa").textContent=t.fa;
+  $("bc").textContent=lang=="ua"?"Дивитись":"Shop now";
+  
+  $("wcnt").textContent=wish.size;document.documentElement.lang=lang;
+  renderCart();
+}
+
+function toast(m){const e=$("toast");e.textContent=m;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),1600)}
+function bump(el){el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump")}
+
+// Корзина
+function renderCart(){
+  const t=T[lang],it=Object.entries(cart).map(([id,q])=>({p:ALL[id],q}));
+  const cnt=it.reduce((a,i)=>a+i.q,0),tot=it.reduce((a,i)=>a+i.p.p*i.q,0);
+  $("cnt").textContent=cnt;$("ct").textContent=t.cart+(cnt?" ("+cnt+")":"");renderUser();
+  $("cl").innerHTML=it.length?it.map(i=>`<div class="ci"><div class="ce">${i.p.i}</div>
+    <div class="cn"><div class="name" title="${i.p.n}">${i.p.n}</div><small>${t.sku}: MS-${1000+i.p.id}</small></div>
+    <div class="qty"><button data-c="minus" data-n="${i.p.id}">−</button><input type="text" inputmode="numeric" value="${i.q}" data-q="${i.p.id}"><button data-c="plus" data-n="${i.p.id}">+</button></div>
+    <div class="cprice"><small>${fmt(i.p.p)} × ${i.q}</small><b>${fmt(i.p.p*i.q)}</b></div>
+    <button class="del" data-c="del" data-n="${i.p.id}">✕</button></div>`).join(""):`<div class="empty">${t.empty}</div>`;
+  $("sl").innerHTML=it.map(i=>`<div class="sli"><span>${i.p.n}</span><span>${fmt(i.p.p)} × ${i.q}</span></div>`).join("");
+  $("tot").textContent=t.total+": "+fmt(tot);$("clr").textContent=t.clear;$("pay").textContent=t.pay;
+}
+function addItem(id){cart[id]=(cart[id]||0)+1;renderCart();bump($("cart"));toast("✓ "+T[lang].added)}
+$("cart").onclick=()=>$("ov").classList.add("open");
+$("ov").onclick=e=>{
+  if(e.target===$("ov")||e.target.closest("[data-x]")){$("ov").classList.remove("open");return}
+  const b=e.target.closest("[data-c]");if(!b)return;
+  const n=b.dataset.n,c=b.dataset.c;
+  if(c=="plus")cart[n]++;
+  if(c=="minus"&&--cart[n]<1)delete cart[n];
+  if(c=="del")delete cart[n];
+  if(c=="clear")cart={};
+  if(c=="pay"&&Object.keys(cart).length){
+    const tot=Object.entries(cart).reduce((a,[id,q])=>a+ALL[id].p*q,0);
+    if(tot>bal){toast("⚠ "+T[lang].poor)}
+    else{bal-=tot;spent+=tot;orders++;save();cart={};$("ov").classList.remove("open");toast("✓ "+T[lang].thanks)}
+  }
+  renderCart();
+};
+document.addEventListener("keydown",e=>{if(e.key=="Escape"){$("ov").classList.remove("open");$("pv").classList.remove("open")}});
+
+// Клики по карточкам
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  const d=b.dataset;
+  if(d.a!==undefined)addItem(d.a);
+  if(d.w!==undefined){const id=+d.w;wish.has(id)?wish.delete(id):wish.add(id);bump($("wl"));render()}
+  if(d.cat){cat=d.cat;shown=12;render();if(b.closest("aside,#qc"))$("news-t").scrollIntoView()}
+  if(d.go)$(d.go).scrollIntoView();
+  if(d.cp!==undefined){if(claimed.has(d.cp))toast("✓");else{claimed.add(d.cp);bal+=+d.cp;save();renderUser();render();toast("🎟 +"+fmt(+d.cp))}}
+  if(d.cur){cur=d.cur;save();render();if($("pv").classList.contains("open"))renderProfile()}
+  if(d.i!==undefined){
+    const p=ALL[d.i];
+    $("di").textContent=p.i;$("dt").textContent=p.n;
+    $("dr").innerHTML=`<i style="color:#f59f00;font-style:normal">★</i> ${p.r} · ${p.v} ${T[lang].rev}`;
+    $("dd").textContent=p.d;
+    $("dp").innerHTML=(p.o?`<span class="old">${fmt(p.o)}</span>`:"")+fmt(p.p);
+    $("da").textContent=T[lang].add;$("da").dataset.a=p.id;
+    $("dlg").showModal();
+  }
+});
+$("da").addEventListener("click",()=>$("dlg").close());
+$("wl").onclick=()=>toast("❤ "+wish.size);
+$("more").onclick=()=>{shown+=12;render()};
+$("sort").onchange=render;
+
+
+const BANN=[
+ {bg:"linear-gradient(120deg,#ff4747,#ff8a00)",h:"SHOP SALES",p:"Autumn 2026 · -35%",e:"🛍️"},
+ {bg:"linear-gradient(120deg,#7b2ff7,#ff4d8d)",h:"MaksaiShop",p:"Нові надходження / New arrivals",e:"🎁"},
+ {bg:"linear-gradient(120deg,#0072ff,#00b4ff)",h:"-35%",p:"Техніка та гаджети / Tech & gadgets",e:"🎧"}
+];
+// Баннер
+$("dots").innerHTML=BANN.map(()=>"<i></i>").join("");
+function setSlide(d){
+  slide=(slide+d+BANN.length)%BANN.length;const s=BANN[slide];
+  $("banner").style.background=s.bg;$("bh").textContent=s.h;$("bp").textContent=s.p;$("be").textContent=s.e;
+  [...$("dots").children].forEach((x,i)=>x.classList.toggle("on",i===slide));
+}
+function auto(){clearInterval(timer);timer=setInterval(()=>setSlide(1),5500)}
+$("bl").onclick=()=>{setSlide(-1);auto()};
+$("br").onclick=()=>{setSlide(1);auto()};
+$("bc").onclick=()=>$("news-t").scrollIntoView();
+setSlide(0);auto();
+
+// Стрелка у Sales
+$("nx").onclick=()=>{const s=$("sales");
+  if(s.scrollLeft+s.clientWidth>=s.scrollWidth-5)s.scrollLeft=0;else s.scrollLeft+=400};
+
+// Язык, поиск, подписка, вверх
+$("ua").onclick=()=>{lang="ua";$("ua").classList.add("on");$("en").classList.remove("on");render()};
+$("en").onclick=()=>{lang="en";$("en").classList.add("on");$("ua").classList.remove("on");render()};
+$("search").oninput=()=>{shown=12;render()};
+$("sub").onclick=()=>{if($("mail").value.includes("@")){toast("✓ "+T[lang].sub);$("mail").value=""}};
+$("up").onclick=()=>scrollTo({top:0});
+addEventListener("scroll",()=>$("up").classList.toggle("show",scrollY>500));
+
+// ===== Валюты, профиль, детали =====
+const RATES={USD:1,UAH:41,EUR:0.92},SYM={USD:"$",UAH:"₴",EUR:"€"},CURS=["UAH","USD","EUR"];
+function fmt(u){const v=u*RATES[cur];
+  const n=v.toLocaleString(cur=="UAH"?"uk-UA":"en-US",{maximumFractionDigits:cur=="UAH"?0:2});
+  return cur=="UAH"?n+" ₴":SYM[cur]+n}
+const LV=[[0,"🥉","Bronze","Бронза"],[200,"🥈","Silver","Срібло"],[800,"🥇","Gold","Золото"],[2000,"💎","Platinum","Платина"]];
+const EMO=["🙂","😎","🤓","🥳","🦊","🐱","🐶","🐼","🦁","🐸","🚀","👾","🧑‍💻","🎮","🦄","🐧"];
+const COL=["#ffffff","#ffd43b","#69db7c","#74c0fc","#faa2c1","#b197fc","#ffa94d","#ced4da"];
+const level=()=>{let i=0;LV.forEach((l,k)=>{if(spent>=l[0])i=k});return i};
+function stock(p){const n=1+(p.id*13)%17;
+  return n<=4?`<span class="stk low">🔥 ${n} ${lang=="ua"?"шт.":"left"}</span>`:`<span class="stk">✔</span>`}
+function save(){try{localStorage.setItem("maksai",JSON.stringify({cur,nick,ava,bal,spent,orders,snowOn,theme}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem("maksai")||"null");
+  if(d){cur=d.cur||cur;nick=d.nick||nick;ava=d.ava||ava;bal=d.bal??bal;spent=d.spent||0;orders=d.orders||0;snowOn=d.snowOn!==false;theme=d.theme||theme}}catch(e){}}
+function paint(el){
+  if(ava.t=="i"){el.textContent="";el.style.backgroundImage=`url(${ava.img})`}
+  else{el.textContent=ava.v;el.style.backgroundImage="none";el.style.backgroundColor=ava.bg}}
+function renderUser(){
+  const t=T[lang],L=LV[level()];
+  $("nick").textContent=nick;
+  $("lvl").textContent=`${L[1]} ${lang=="ua"?L[3]:L[2]} · ${cur}`;
+  $("bal").textContent="💰 "+fmt(bal);
+  $("cbal").textContent=t.bal+": "+fmt(bal);
+  paint($("ava"));
+  $("curs").innerHTML=CURS.map(c=>`<button class="${c==cur?"on":""}" data-cur="${c}" title="${c}">${SYM[c]}</button>`).join("");
+}
+function renderProfile(){
+  const t=T[lang],i=level(),nx=LV[i+1];
+  $("pt2").textContent=t.prof;paint($("pav"));
+  $("l1").textContent=t.avatar;$("l2").textContent=t.nickl;$("l3").textContent=t.curl;$("upl").textContent=t.upl;
+  $("agrid").innerHTML=EMO.map(e=>`<button class="${ava.t=="e"&&ava.v==e?"on":""}" data-ae="${e}">${e}</button>`).join("");
+  $("bgcol").innerHTML=COL.map(c=>`<button class="${ava.bg==c?"on":""}" style="background:${c}" data-ac="${c}"></button>`).join("");
+  if(document.activeElement!==$("nin"))$("nin").value=nick;
+  $("curs2").innerHTML=CURS.map(c=>`<button class="${c==cur?"on":""}" data-cur="${c}">${SYM[c]} ${c}</button>`).join("");
+  const cc=Object.values(cart).reduce((a,b)=>a+b,0);
+  $("stats").innerHTML=[[orders,t.orders],[fmt(spent),t.spent],[wish.size,t.wish],[cc,t.cartn]].map(x=>`<div class="stat"><b>${x[0]}</b><small>${x[1]}</small></div>`).join("");
+  $("barf").style.width=(nx?Math.min(100,(spent-LV[i][0])/(nx[0]-LV[i][0])*100):100)+"%";
+  $("lvt").textContent=nx?`${t.next} ${nx[1]} ${lang=="ua"?nx[3]:nx[2]}: ${fmt(nx[0]-spent)}`:t.max;
+  $("topup").textContent=t.topup+fmt(100);
+  $("snt").textContent=t.snow;$("snowcb").checked=snowOn;
+}
+$("user").onclick=()=>{renderProfile();$("pv").classList.add("open")};
+$("pv").onclick=e=>{
+  if(e.target===$("pv")||e.target.closest("[data-px]")){$("pv").classList.remove("open");return}
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.ae){ava.t="e";ava.v=d.ae}
+  if(d.ac){ava.t="e";ava.bg=d.ac}
+  if(b.id=="topup"){bal+=100;toast("✓ +"+fmt(100))}
+  if(d.cur)return;
+  save();renderUser();renderProfile();
+};
+$("nin").oninput=e=>{nick=e.target.value.trim()||"John";save();renderUser()};
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{
+    const c=document.createElement("canvas");c.width=c.height=128;const m=Math.min(im.width,im.height);
+    c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,128,128);
+    ava={...ava,t:"i",img:c.toDataURL("image/jpeg",.85)};save();renderUser();renderProfile()};im.src=r.result};
+  r.readAsDataURL(f)};
+$("snowcb").onchange=e=>{snowOn=e.target.checked;$("snow").style.display=snowOn?"block":"none";save()};
+
+// Снег
+for(let i=0;i<16;i++){const x=document.createElement("span");x.className="sn";x.textContent=["🍂","🍁","🍃"][i%3];
+  x.style.cssText=`left:${Math.random()*100}%;font-size:${10+Math.random()*14}px;animation-duration:${8+Math.random()*10}s;animation-delay:-${Math.random()*15}s;opacity:${.4+Math.random()*.4}`;
+  $("snow").appendChild(x)}
+
+// Таймер до Нового года
+function tick(){const n=new Date(),e=new Date(n);e.setHours(24,0,0,0);const ms=e-n,z=x=>String(x).padStart(2,0);
+  $("cd").innerHTML=(lang=="ua"?"Закінчується через":"Ends in")+" "+[Math.floor(ms/36e5),Math.floor(ms%36e5/6e4),Math.floor(ms%6e4/1e3)].map(x=>`<b>${z(x)}</b>`).join(":")}
+tick();setInterval(tick,1000);
+
+$("nx2").onclick=()=>{const r=$("news");if(r.scrollLeft+r.clientWidth>=r.scrollWidth-5)r.scrollLeft=0;else r.scrollLeft+=400};
+$("pv2").onclick=()=>{$("news").scrollLeft-=400};
+$("cl").addEventListener("change",e=>{const i=e.target.closest("[data-q]");if(!i)return;
+  const v=Math.min(99,parseInt(i.value)||0);if(v<1)delete cart[i.dataset.q];else cart[i.dataset.q]=v;renderCart()});
+
+function applyTheme(){document.documentElement.dataset.theme=theme;$("theme").textContent=theme=="dark"?"☀️":"🌙"}
+$("theme").onclick=()=>{theme=theme=="dark"?"light":"dark";applyTheme();save()};
+load();applyTheme();$("snow").style.display=snowOn?"block":"none";
+
+render();
+</script>
+</body>
+</html>
